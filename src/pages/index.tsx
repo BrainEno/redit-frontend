@@ -1,10 +1,14 @@
+import React from "react";
 import Head from "next/head";
 
-export default function Home() {
+const Home = () => {
   return (
     <div>
-      <Head>Home</Head>
-      Home page
+      <Head>
+        <title>Home | BOT CON</title>
+      </Head>
     </div>
   );
-}
+};
+
+export default Home;

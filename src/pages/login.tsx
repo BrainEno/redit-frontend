@@ -1,28 +1,26 @@
-import { FormEvent, useState } from "react";
-import Link from "next/link";
 import Axios from "axios";
-import InputGroup from "../components/InputGroup";
+import Link from "next/link";
 import { useRouter } from "next/router";
+import { browser } from "process";
+import { FormEvent, useState } from "react";
+import InputGroup from "../components/InputGroup";
 
-const Register = () => {
-  const [email, setEmail] = useState("");
+const Login = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const [agreement, setAgreement] = useState(false);
   const [errors, setErrors] = useState<any>({});
   const router = useRouter();
 
   const submitForm = async (event: FormEvent) => {
     event.preventDefault();
-
     try {
-      await Axios.post("/auth/register", {
-        email,
-        password,
+      const res = await Axios.post("/auth/login", {
         username,
+        password,
       });
 
-      router.push("/login");
+      localStorage.setItem("user", JSON.stringify(res.data));
+      router.push("/");
     } catch (err) {
       setErrors(err.response.data);
     }
@@ -36,23 +34,9 @@ const Register = () => {
 
       <div className='flex flex-col justify-center pl-6 '>
         <div className='w-70'>
-          <h1 className='mb-2 text-lg font-medium'>新用户注册</h1>
-          <p className='mb-10 text-xs'>同意隐私保护政策并继续注册</p>
+          <h1 className='mb-2 text-lg font-medium'>登录账户</h1>
+          <p className='mb-10 text-xs'>同意隐私保护政策并继续登录</p>
           <form onSubmit={submitForm}>
-            <div className='mb-6'>
-              <input
-                type='checkbox'
-                className='mr-1 cursor-pointer'
-                id='agreement'
-                checked={agreement}
-                onChange={(e) => setAgreement(e.target.checked)}
-              />
-              <label htmlFor='agreement' className='text-xs cursor-pointer'>
-                {agreement
-                  ? "虽然并不会有什么最新资讯"
-                  : "向我发送邮件以便获取关于BOT-TPC的最新资讯"}
-              </label>
-            </div>
             <InputGroup
               value={username}
               error={errors.username}
@@ -62,14 +46,6 @@ const Register = () => {
               setValue={setUsername}
             />
             <InputGroup
-              value={email}
-              error={errors.email}
-              placeholder='Email'
-              className='mb-2'
-              type='email'
-              setValue={setEmail}
-            />
-            <InputGroup
               value={password}
               error={errors.password}
               placeholder='密码'
@@ -77,18 +53,19 @@ const Register = () => {
               type='password'
               setValue={setPassword}
             />
+
             <button
               type='submit'
               className='w-full py-3 mb-4 text-xs font-bold text-white uppercase bg-blue-500 border border-blue-500 rounded'>
-              注册
+              登录
             </button>
           </form>
           <small>
-            已经有账号了？点击
-            <Link href='/login'>
-              <a className='ml-1 text-blue-500'>这里 </a>
+            还没有账号？点击
+            <Link href='/register'>
+              <a className='ml-1 text-blue-500'>这里</a>
             </Link>
-            登录
+            注册
           </small>
         </div>
       </div>
@@ -96,4 +73,4 @@ const Register = () => {
   );
 };
 
-export default Register;
+export default Login;
