@@ -1,7 +1,7 @@
 import Axios from "axios";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { browser } from "process";
+import { useAuthDispatch, useAuthState } from "../context/auth";
 import { FormEvent, useState } from "react";
 import InputGroup from "../components/InputGroup";
 
@@ -9,7 +9,11 @@ const Login = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [errors, setErrors] = useState<any>({});
+  const dispatch = useAuthDispatch();
+  const { authenticated } = useAuthState();
+
   const router = useRouter();
+  if (authenticated) router.push("/");
 
   const submitForm = async (event: FormEvent) => {
     event.preventDefault();
@@ -19,7 +23,7 @@ const Login = () => {
         password,
       });
 
-      localStorage.setItem("user", JSON.stringify(res.data));
+      dispatch("LOGIN", res.data);
       router.push("/");
     } catch (err) {
       setErrors(err.response.data);

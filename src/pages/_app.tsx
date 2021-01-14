@@ -4,6 +4,7 @@ import Navbar from "../components/Navbar";
 import { useRouter } from "next/router";
 import { AppProps } from "next/app";
 import Axios from "axios";
+import { AuthProvider } from "../context/auth";
 
 Axios.defaults.baseURL = "http://localhost:5000/api";
 Axios.defaults.withCredentials = true;
@@ -13,10 +14,10 @@ function MyApp({ Component, pageProps }: AppProps) {
   const authRoutes = ["/register", "/login"];
   const authRoute = authRoutes.includes(pathname);
   return (
-    <>
+    <AuthProvider>
       {!authRoute && <Navbar />}
       <Component {...pageProps} />
-    </>
+    </AuthProvider>
   );
 }
 

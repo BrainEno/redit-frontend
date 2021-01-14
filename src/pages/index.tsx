@@ -25,7 +25,7 @@ const Home: React.FC<HomeProps> = () => {
       <div className='container flex pt-4'>
         <div className='w-160'>
           {posts.map((post) => (
-            <PostCard post={post} />
+            <PostCard post={post} key={post.identifier} />
           ))}
         </div>
       </div>
