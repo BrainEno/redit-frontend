@@ -54,13 +54,20 @@ const PostCard: React.FC<PostCardProps> = ({
       <div className='w-10 py-3 text-center bg-gray-200 rounded-l'>
         <div
           onClick={() => vote(1)}
-          className='w-6 mx-auto text-gray-400 rounded cursor-pointer hover:bg-gray-300 hover:text-red-600'>
+          className='w-6 mx-auto text-gray-400 rounded cursor-pointer hover:bg-gray-300 hover:text-red-500'>
           <i
             className={classNames("icon-arrow-up", {
-              "text-red-600": userVote === 1,
+              "text-red-500": userVote === 1,
             })}></i>
         </div>
-        <p className='text-xs font-bold'>{voteScore}</p>
+        <p
+          className={classNames(
+            "text-xs font-bold",
+            { "text-red-500": userVote === 1 },
+            { "text-blue-500": userVote === -1 }
+          )}>
+          {voteScore}
+        </p>
         <div
           onClick={() => vote(-1)}
           className='w-6 mx-auto text-gray-400 rounded cursor-pointer hover:bg-gray-300 hover:text-blue-500'>
@@ -74,16 +81,16 @@ const PostCard: React.FC<PostCardProps> = ({
       <div className='w-full p-2'>
         <div className='flex items-center'>
           <Link href={`r/${subName}`}>
-            <>
-              <img
-                src='https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mp&f=y'
-                alt=''
-                className='w-6 h-6 mr-1 rounded-full cursor-pointer'
-              />
-              <a className='text-xs font-bold cursor-pointer hover:underline'>
-                /r/{subName}
-              </a>
-            </>
+            <img
+              src='https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mp&f=y'
+              alt=''
+              className='w-6 h-6 mr-1 rounded-full cursor-pointer'
+            />
+          </Link>
+          <Link href={`r/${subName}`}>
+            <a className='text-xs font-bold cursor-pointer hover:underline'>
+              r/{subName}
+            </a>
           </Link>
           <p className='text-xs text-gray-500'>
             <span className='mx-1'>•</span>

@@ -1,35 +1,37 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import Head from "next/head";
-import Axios from "axios";
+// import Axios from "axios";
 import { Post } from "../../types";
 import PostCard from "../components/PostCard";
+import useSWR from "swr";
 
 interface HomeProps {
   posts: Post[] | undefined;
 }
 
 const Home: React.FC<HomeProps> = () => {
-  const [posts, setPosts] = useState<Post[]>([]);
+  // const [posts, setPosts] = useState<Post[]>([]);
 
-  useEffect(() => {
-    Axios.get("/posts")
-      .then((res) => setPosts(res.data))
-      .catch((err) => console.log(err));
-  }, []);
+  // useEffect(() => {
+  //   Axios.get("/posts")
+  //     .then((res) => setPosts(res.data))
+  //     .catch((err) => console.log(err));
+  // }, []);
+  const { data: posts } = useSWR("/posts");
 
   return (
-    <div className='pt-12'>
+    <>
       <Head>
         <title>Home | BOT CON</title>
       </Head>
       <div className='container flex pt-4'>
         <div className='w-160'>
-          {posts.map((post) => (
+          {posts?.map((post: Post) => (
             <PostCard post={post} key={post.identifier} />
           ))}
         </div>
       </div>
-    </div>
+    </>
   );
 };
 
