@@ -3,6 +3,7 @@ export interface Post {
   title: string;
   body: string;
   slug: string;
+  sub?: Sub;
   username: string;
   url: string; //virtual fields
   subName: string;

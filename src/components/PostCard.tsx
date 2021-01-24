@@ -4,16 +4,9 @@ import Link from "next/link";
 import { Post } from "../../types";
 import Axios from "axios";
 import classNames from "classnames";
+import ActionButton from "./ActionButton";
 
 dayjs.extend(relativeTime);
-
-const ActionButton: React.FC = ({ children }) => {
-  return (
-    <div className='px-1 py-1 mr-2 text-xs text-gray-400 rounded cursor-pointer hover:bg-gray-200'>
-      {children}
-    </div>
-  );
-};
 
 interface PostCardProps {
   post: Post;
@@ -51,7 +44,7 @@ const PostCard: React.FC<PostCardProps> = ({
   return (
     <div key={identifier} className='flex mb-4 bg-white rounded'>
       {/*Vote section*/}
-      <div className='w-10 py-3 text-center bg-gray-200 rounded-l'>
+      <div className='w-10 py-3 text-center rounded-l bg-gray-50'>
         <div
           onClick={() => vote(1)}
           className='w-6 mx-auto text-gray-400 rounded cursor-pointer hover:bg-gray-300 hover:text-red-500'>
@@ -89,7 +82,7 @@ const PostCard: React.FC<PostCardProps> = ({
           </Link>
           <Link href={`/r/${subName}`}>
             <a className='text-xs font-bold cursor-pointer hover:underline'>
-              r/{subName}
+              /r/{subName}
             </a>
           </Link>
           <p className='text-xs text-gray-500'>
