@@ -1,5 +1,4 @@
 export interface Post {
-  id: number;
   identifier: string;
   title: string;
   body: string;
@@ -19,4 +18,19 @@ export interface User {
   email: string;
   createdAt: string;
   updatedAt: string;
+}
+
+export interface Sub {
+  createdAt: string;
+  updatedAt: string;
+  name: string;
+  title: string;
+  description: string;
+  imageUrn: string;
+  bannerUrn: string;
+  username: string;
+  imageUrl: string;
+  bannerUrl: string;
+  postCount?: number;
+  posts: Post[];
 }

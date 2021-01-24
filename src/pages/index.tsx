@@ -1,9 +1,10 @@
 import React from "react";
 import Head from "next/head";
-// import Axios from "axios";
+import { Sub } from "types";
 import { Post } from "../../types";
 import PostCard from "../components/PostCard";
 import useSWR from "swr";
+import Link from "next/link";
 
 interface HomeProps {
   posts: Post[] | undefined;
@@ -18,6 +19,7 @@ const Home: React.FC<HomeProps> = () => {
   //     .catch((err) => console.log(err));
   // }, []);
   const { data: posts } = useSWR("/posts");
+  const { data: topSubs } = useSWR("/misc/top-subs");
 
   return (
     <>
@@ -29,6 +31,35 @@ const Home: React.FC<HomeProps> = () => {
           {posts?.map((post: Post) => (
             <PostCard post={post} key={post.identifier} />
           ))}
+        </div>
+        {/* Silider */}
+        <div className='ml-6 w-80'>
+          <div className='bg-white rounded'>
+            <div className='p-4 border-b-2'>
+              <p className='text-lg font-semibold text-center'>最热社区</p>
+            </div>
+          </div>
+          <div>
+            {topSubs?.map((sub: Sub) => (
+              <div
+                key={sub.name}
+                className='flex items-center px-4 py-2 text-xs border-b'>
+                <Link href={`/r/${sub.name}`}>
+                  <img
+                    src={sub.imageUrl}
+                    alt='Sub'
+                    className='w-8 h-8 mr-2 overflow-hidden rounded-full cursor-pointer'
+                  />
+                </Link>
+                <Link href={`/r/${sub.name}`}>
+                  <a className='font-bold hover:cursor-pointer'>
+                    /r/{sub.name}
+                  </a>
+                </Link>
+                <p className='ml-auto font-med'>{sub.postCount}</p>
+              </div>
+            ))}
+          </div>
         </div>
       </div>
     </>

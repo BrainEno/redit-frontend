@@ -13,7 +13,7 @@ const Login = () => {
   const { authenticated } = useAuthState();
 
   const router = useRouter();
-  if (authenticated) router.push("/");
+  if (authenticated) router.back();
 
   const submitForm = async (event: FormEvent) => {
     event.preventDefault();
