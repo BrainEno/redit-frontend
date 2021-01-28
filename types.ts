@@ -43,6 +43,7 @@ export interface Comment {
   body: string;
   username: string;
   votes: string;
+  post?: Post;
   //virtural
   userVote: number;
   voteScore: number;

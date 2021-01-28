@@ -26,7 +26,7 @@ const Home: React.FC<HomeProps> = () => {
       <Head>
         <title>Home | BOT CON</title>
       </Head>
-      <div className='container flex pt-4'>
+      <div className='flex justify-center pt-4'>
         <div className='w-160'>
           {posts?.map((post: Post) => (
             <PostCard post={post} key={post.identifier} />
@@ -43,7 +43,7 @@ const Home: React.FC<HomeProps> = () => {
             {topSubs?.map((sub: Sub) => (
               <div
                 key={sub.name}
-                className='flex items-center px-4 py-2 text-xs border-b'>
+                className='flex items-center px-4 py-2 text-xs bg-white border-b'>
                 <Link href={`/r/${sub.name}`}>
                   <img
                     src={sub.imageUrl}

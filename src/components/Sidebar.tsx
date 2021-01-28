@@ -10,7 +10,7 @@ interface SidebarProps {
 const Sidebar: React.FC<SidebarProps> = ({ sub }) => {
   const { authenticated } = useAuthState();
   return (
-    <div className='ml-6 w-80'>
+    <div className='ml-6 w-80 '>
       <div className='bg-white rounded'>
         <div className='p-3 bg-blue-500 rounded-t'>
           <p className='font-semibold text-white'>关于社区</p>

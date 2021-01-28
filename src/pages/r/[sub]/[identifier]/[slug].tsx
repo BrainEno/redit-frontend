@@ -97,7 +97,7 @@ const PostPage: React.FC = () => {
           </div>
         </a>
       </Link>
-      <div className='container flex pt-5'>
+      <div className='flex justify-center pt-5'>
         {/**Post */}
         <div className='w-160'>
           <div className='bg-white rounded'>

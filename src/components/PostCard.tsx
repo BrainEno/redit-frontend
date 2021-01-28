@@ -42,7 +42,7 @@ const PostCard: React.FC<PostCardProps> = ({
   };
 
   return (
-    <div key={identifier} className='flex mb-4 bg-white rounded'>
+    <div key={identifier} className='flex mb-4 bg-white rounded w-160'>
       {/*Vote section*/}
       <div className='flex-shrink-0 w-10 py-3 text-center rounded-l bg-gray-50'>
         <div
