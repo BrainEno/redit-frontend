@@ -92,16 +92,17 @@ const submit: React.FC = () => {
 
 export default submit;
 
-export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
-  try {
-    const cookie = req.headers.cookie;
-    if (!cookie) throw new Error("Missing auth token cookie");
+// export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
+//   try {
+//     const cookie = req.headers.cookie;
+//     if (!cookie) throw new Error("Missing auth token cookie");
 
-    await Axios.get("/auth/me", { headers: { cookie } });
+//     await Axios.get("/auth/me", { headers: { cookie } });
 
-    return { props: {} };
-  } catch (err) {
-    res.writeHead(307, { Location: "/login" }).end();
-    return null;
-  }
-};
+//     console.log({ props: {} });
+
+//     return { props: {} };
+//   } catch (err) {
+//     return res.writeHead(307, { Location: "/login" }).end();
+//   }
+// };
