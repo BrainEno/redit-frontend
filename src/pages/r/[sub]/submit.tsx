@@ -1,5 +1,5 @@
 import Axios from "axios";
-import { GetServerSideProps } from "next";
+// import { GetServerSideProps } from "next";
 import Head from "next/head";
 import { useRouter } from "next/router";
 import React, { FormEvent, useState } from "react";
