@@ -5,11 +5,14 @@ import { Post } from "../../types";
 import Axios from "axios";
 import classNames from "classnames";
 import ActionButton from "./ActionButton";
+import { useAuthState } from "../context/auth";
+import { useRouter } from "next/router";
 
 dayjs.extend(relativeTime);
 
 interface PostCardProps {
   post: Post;
+  revalidate?: Function;
 }
 
 const PostCard: React.FC<PostCardProps> = ({
@@ -25,9 +28,18 @@ const PostCard: React.FC<PostCardProps> = ({
     userVote,
     username,
     commentCount,
+    sub,
   },
+  revalidate,
 }) => {
+  const { authenticated } = useAuthState();
+  const router = useRouter();
+  const isInSubPage = router.pathname === "/r/[sub]"; // /r/[sub]
   const vote = async (value: number) => {
+    if (!authenticated) router.push("/login");
+
+    if (value === userVote) value = 0;
+
     try {
       const res = await Axios.post("/misc/vote", {
         identifier,
@@ -35,6 +47,7 @@ const PostCard: React.FC<PostCardProps> = ({
         value,
       });
 
+      if (revalidate) revalidate();
       console.log(res.data);
     } catch (err) {
       console.log(err);
@@ -42,7 +55,10 @@ const PostCard: React.FC<PostCardProps> = ({
   };
 
   return (
-    <div key={identifier} className='flex mb-4 bg-white rounded w-160'>
+    <div
+      key={identifier}
+      className='flex mb-4 bg-white rounded w-160'
+      id={identifier}>
       {/*Vote section*/}
       <div className='flex-shrink-0 w-10 py-3 text-center rounded-l bg-gray-50'>
         <div
@@ -73,20 +89,24 @@ const PostCard: React.FC<PostCardProps> = ({
       {/*Post data section*/}
       <div className='w-full p-2'>
         <div className='flex items-center'>
-          <Link href={`/r/${subName}`}>
-            <img
-              src='https://www.gravatar.com/avatar/00000000000000000000000000000000?d=mp&f=y'
-              alt=''
-              className='w-6 h-6 mr-1 rounded-full cursor-pointer'
-            />
-          </Link>
-          <Link href={`/r/${subName}`}>
-            <a className='text-xs font-bold cursor-pointer hover:underline'>
-              /r/{subName}
-            </a>
-          </Link>
+          {!isInSubPage && (
+            <>
+              <Link href={`/r/${subName}`}>
+                <img
+                  src={sub.imageUrl}
+                  alt=''
+                  className='w-6 h-6 mr-1 rounded-full cursor-pointer'
+                />
+              </Link>
+              <Link href={`/r/${subName}`}>
+                <a className='text-xs font-bold cursor-pointer hover:underline'>
+                  /r/{subName}
+                </a>
+              </Link>{" "}
+              <span className='mx-1'>•</span>
+            </>
+          )}
           <p className='text-xs text-gray-500'>
-            <span className='mx-1'>•</span>
             Posted by
             <Link href={`/u/${username}`}>
               <a href='' className='mx-1 hover:underline'>

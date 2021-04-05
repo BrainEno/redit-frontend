@@ -12,6 +12,8 @@ class MyDocument extends Document {
     return (
       <Html>
         <Head>
+          <meta property='og:site_name' content='bot con' />
+          <link rel='favicon.ico' href='favicon.ico' type='image/x-icon' />
           <link rel='preconnect' href='https://fonts.gstatic.com' />
           <link rel='preconnect' href='https://fonts.gstatic.com' />
           <link

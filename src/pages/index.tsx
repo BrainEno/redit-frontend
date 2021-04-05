@@ -1,9 +1,9 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Head from "next/head";
 import { Sub } from "types";
 import { Post } from "../../types";
 import PostCard from "../components/PostCard";
-import useSWR from "swr";
+import useSWR, { useSWRInfinite } from "swr";
 import Link from "next/link";
 import { useAuthState } from "../context/auth";
 
@@ -19,10 +19,48 @@ const Home: React.FC<HomeProps> = () => {
   //     .then((res) => setPosts(res.data))
   //     .catch((err) => console.log(err));
   // }, []);
-  const { data: posts } = useSWR<Post[]>("/posts");
+  const [observedPost, setObservedPost] = useState("");
+  // const { data: posts } = useSWR<Post[]>("/posts");
   const { data: topSubs } = useSWR<Sub[]>("/misc/top-subs");
 
   const { authenticated } = useAuthState();
+
+  const {
+    data,
+    error,
+    size: page,
+    setSize: setPage,
+    isValidating,
+    revalidate,
+  } = useSWRInfinite<Post[]>((index) => `/posts?page=${index}`);
+
+  const isInitialLoading = !data && !error;
+  const posts: Post[] = data ? [].concat(...data) : [];
+
+  useEffect(() => {
+    if (!posts || posts.length === 0) return;
+    const id = posts[posts.length - 1].identifier;
+
+    if (id !== observedPost) {
+      setObservedPost(id);
+      observeElement(document.getElementById(id));
+    }
+  }, [posts]);
+
+  const observeElement = (element: HTMLElement) => {
+    if (!element) return;
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (entries[0].isIntersecting === true) {
+          console.log("Reached bottom of post");
+          setPage(page + 1);
+          observer.unobserve(element);
+        }
+      },
+      { threshold: 1 }
+    );
+    observer.observe(element);
+  };
 
   return (
     <>
@@ -30,10 +68,18 @@ const Home: React.FC<HomeProps> = () => {
         <title>Home | BOT CON</title>
       </Head>
       <div className='flex justify-center pt-4'>
+        {isInitialLoading && <p className='text-lg text-center'>正在加载...</p>}
         <div className='w-full px-4 md:w-160 md:0 '>
           {posts?.map((post: Post) => (
-            <PostCard post={post} key={post.identifier} />
+            <PostCard
+              post={post}
+              key={post.identifier}
+              revalidate={revalidate}
+            />
           ))}
+          {isValidating && posts.length > 0 && (
+            <p className='text-lg text-center'>加载更多...</p>
+          )}
         </div>
         {/* Silider */}
         <div className='hidden ml-6 md:block w-80'>

@@ -61,7 +61,7 @@ const SubPage: React.FC<SubProps> = ({}) => {
     postsMarkup = <p className='text-lg text-center'>该话题暂无贴文</p>;
   } else {
     postsMarkup = sub.posts.map((post: Post) => (
-      <PostCard key={post.identifier} post={post} />
+      <PostCard key={post.identifier} post={post} revalidate={revalidate} />
     ));
   }
 
