@@ -1,6 +1,6 @@
 import React, { FormEvent, useState } from "react";
 import Head from "next/head";
-import { GetServerSideProps } from "next";
+// import { GetServerSideProps } from "next";
 import Axios from "axios";
 import classNames from "classnames";
 import { useRouter } from "next/router";
